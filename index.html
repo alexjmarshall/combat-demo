@@ -8,10 +8,39 @@
     <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
-    <button id="attack-button">Attack!</button>
-    <div id="log">
 
+    <div id="app">
+
+      <combatant v-for="actor in actors" v-bind:actor="actor" v-bind:key="actor._id"></combatant>
+      
+      <span> <button v-on:click="updateLog()">Attack!</button> <button v-on:click="clearLog()">Clear</button> </span>
+
+      <div id="log"> {{ log }} </div>
     </div>
-	<script type="module" src="js/main.js"></script>
+
+	  <script type="module">
+      import { actors } from "./js/data/actors.js"
+      import { combatant } from "./js/components/combatant.js"
+      import { attack } from "./js/attack.js"
+
+      new Vue({
+        el: '#app',
+        data: {
+          actors: actors.map(a => ({...a})),
+          log: '',
+        },
+        methods: {
+          updateLog() {
+            const result = attack(this.actors);
+            this.log += result.text;
+          },
+          clearLog() {
+            this.log = '';
+            this.actors = actors.map(a => ({...a}));
+          },
+        }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   </body>
 </html>
