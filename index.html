@@ -4,39 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Combat Demo</title>
+    <title>Detailed Combat Demo</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   </head>
   <body>
 
     <div id="app">
 
-      <combatant v-for="actor in actors" v-bind:actor="actor" v-bind:key="actor._id"></combatant>
+      <div class="flex-container">
+        <combatant class="combatant" v-on:swap-weapon="swapWeapon" v-for="actor in actors" v-bind:actor="actor" v-bind:key="actor._id"></combatant>
+      </div>
       
-      <span> <button v-on:click="updateLog()">Attack!</button> <button v-on:click="clearLog()">Clear</button> </span>
+      <div class="command-buttons"> <button @click="updateLog()">Attack!</button> <button @click="clearLog()">Clear</button> </div>
 
-      <div id="log"> {{ log }} </div>
+      <div class="logs"> <p v-for="log of logs"> {{ log }} </p> </div>
     </div>
 
 	  <script type="module">
       import { actors } from "./js/data/actors.js"
+      import { weapons } from "./js/data/weapons.js"
       import { combatant } from "./js/components/combatant.js"
       import { attack } from "./js/attack.js"
 
       new Vue({
         el: '#app',
         data: {
-          actors: actors.map(a => ({...a})),
-          log: '',
+          actors: actors.map(a => ( {...a, armors: a.armors.map(a => ( {...a} ) ) } ) ),
+          logs: [],
         },
         methods: {
           updateLog() {
-            const result = attack(this.actors);
-            this.log += result.text;
+            const results = attack(this.actors);
+            this.logs.push(...results);
+            this.logs.length > 6 && this.logs.shift();
           },
           clearLog() {
-            this.log = '';
-            this.actors = actors.map(a => ({...a}));
+            this.logs = [];
+            this.actors = actors.map(a => ( {...a, armors: a.armors.map(a => ( {...a} ) ) } ) );
+          },
+          swapWeapon(actorId, right) {
+            const actor = this.actors.find(a => a._id === actorId);
+            let oldIndex = weapons.indexOf(weapons.find(w => w._id === actor.weapon._id));
+            let newIndex = right ? oldIndex + 1 : oldIndex - 1;
+            if (newIndex === weapons.length) newIndex = 0;
+            if (newIndex < 0) newIndex = weapons.length - 1;
+            actor.weapon = weapons[newIndex];
           },
         }
       });
