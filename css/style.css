@@ -38,7 +38,7 @@ button {
 }
 
 #app { 
-  white-space: pre-line; 
+  white-space: pre-line;
 }
 
 .flex-container {
@@ -99,9 +99,15 @@ button {
 }
 
 .logs {
-  overflow-y: hidden;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
   scroll-behavior: smooth;
-  height: 55vh;
+  height: 50vh;
+}
+
+.logs::-webkit-scrollbar {
+  display: none;
 }
 
 .log {
