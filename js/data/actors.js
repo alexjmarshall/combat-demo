@@ -12,6 +12,7 @@ const actorData = {
     },
     armors: armorSets.a,
     weapon: weapons[3],
+    size: 'M',
   },
   'B/X Bandit': {
     _id: 2,
@@ -22,6 +23,7 @@ const actorData = {
     },
     armors: armorSets.b,
     weapon: weapons[2],
+    size: 'M',
   },
 };
 
