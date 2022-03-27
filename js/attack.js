@@ -34,7 +34,6 @@ export const attack = (() => {
     
     const attackerSize = Constant.SIZE_VALUES[attacker.size];
     const targetSize = Constant.SIZE_VALUES[target.size];
-
   
     const weapName = weapon.name;
     const weapSpeed = weapon.speed || 10 - attackerSize;
@@ -191,7 +190,7 @@ export const attack = (() => {
 
       // knockdown
       const knockDownMulti = invalidKnockdownAreas.includes(coverageArea) ? 0 :
-                            doubleKnockdownAreas.includes(coverageArea) ? 2 : 1;
+                             doubleKnockdownAreas.includes(coverageArea) ? 2 : 1;
       const knockdownChance = knockDownMulti * 2 * (weapDmgResult + 10 - weapSpeed) - 10 * (targetSize - attackerSize);
       const isKnockdown = atkForm === 'swing' && rollDice(100) <= knockdownChance;
       if (isKnockdown) {
