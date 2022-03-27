@@ -1,5 +1,4 @@
 import * as Constant from "./data/constants.js";
-import * as Util from "./utils.js"
 
 export const attack = (() => {
   let attackerId;
