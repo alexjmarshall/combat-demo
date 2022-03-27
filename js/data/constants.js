@@ -488,10 +488,10 @@ const BASIC_INJURIES = {
         text: ' and bruises a bone',
       }, 
       serious: {
-        text: ' and breaks a bone',
+        text: ' and snaps through bone',
       },
       critical: {
-        text: ' and a broken bone pokes through pulped red flesh',
+        text: ' and the shattered bone pokes through the flesh',
       },
     },
     piercing: {
@@ -523,10 +523,10 @@ const BASIC_INJURIES = {
         text: ' and cracks a bone',
       },
       serious: {
-        text: ' and shatters a bone',
+        text: ' and dislocates the joint',
       },
       critical: {
-        text: ' and shatters and dislocates the joint',
+        text: ' and shatters the joint, cranking it in the wrong direction',
       },
     },
     piercing: {
@@ -902,7 +902,7 @@ export const HIT_LOCATIONS = {
           text: ' and pierces the cheek',
         },
         serious: {
-          text: ' and breaks teeth',
+          text: ' and breaks the teeth',
         },
         critical: {
           text: ' and smashes through teeth and into the brain',
