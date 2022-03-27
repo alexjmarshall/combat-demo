@@ -113,9 +113,8 @@ export const attack = (() => {
   
     // roll for hit location
     const hitLocRoll = rollDice(100);
-    let hitLocTable = atkForm === 'swing' ? 'SWING' : 'THRUST'; // TODO swing high/low
-    // hitLoc = Constant.HIT_LOC_ARRS[hitLocTable][hitLocRoll - 1];
-    hitLoc = 'gut';
+    let hitLocTable = atkForm === 'swing' ? 'SWING' : 'THRUST';
+    hitLoc = Constant.HIT_LOC_ARRS[hitLocTable][hitLocRoll - 1];
     coverageArea = hitLoc.replace('right ', '').replace('left ', '');
     const acObj = target.ac[coverageArea][dmgType] || {};
     targetAc = acObj.ac ?? targetAc;
