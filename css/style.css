@@ -43,11 +43,14 @@ button {
 
 .flex-container {
   display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .combatant {
-  width: 50%;
+  min-width: 390px;
   line-height: 1.8rem;
+  flex-basis: 45%;
 }
 
 .command-buttons {
@@ -56,7 +59,7 @@ button {
 
 .grid-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 240px auto;
 }
 
 .grid-col-1 {
@@ -67,8 +70,23 @@ button {
   grid-column: 2;
 }
 
-.armor-bonuses {
-  grid-column: 2;
+.grid-row-1 {
+  grid-row: 1;
+}
+
+.grid-row-2 {
+  grid-row: 2;
+}
+
+.grid-row-3 {
+  grid-row: 3;
+}
+
+.grid-row-4 {
+  grid-row: 4;
+}
+
+.grid-row-5 {
   grid-row: 5;
 }
 
@@ -78,4 +96,10 @@ button {
 
 .caret {
   font-size: 18px;
+}
+
+.log {
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  height: 55vh;
 }
