@@ -141,7 +141,7 @@ export const attack = (() => {
   
   
   
-    resultText += ` (${totalAtkResult} vs. AC ${targetAc})`;
+    resultText += ` (${totalAtkResult} vs. AC ${targetAc}${dr ? `/DR ${dr}` : ''})`;
     // 1 always misses and 20 always hits
     isHit = d20Result > 1 && totalAtkResult >= targetAc || d20Result === 20;
   
