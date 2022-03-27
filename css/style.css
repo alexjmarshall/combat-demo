@@ -98,8 +98,12 @@ button {
   font-size: 18px;
 }
 
-.log {
+.logs {
   overflow-y: hidden;
   scroll-behavior: smooth;
   height: 55vh;
+}
+
+.log {
+  margin-top: 0;
 }

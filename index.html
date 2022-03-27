@@ -15,7 +15,7 @@
         <combatant class="combatant" v-on:swap-weapon="swapWeapon" v-for="actor in actors" v-bind:actor="actor" v-bind:key="actor._id"></combatant>
       </div>
       <div class="command-buttons"> <button @click="doAttack()">Attack!</button> <button @click="clear()">Clear</button> </div>
-      <div ref="log" class="log"> <p v-for="log of logs"> {{ log }} </p> </div>
+      <div ref="logs" class="logs"> <p class="log" v-for="log of logs"> {{ log }} </p> </div>
     </div>
 
 	  <script type="module">
@@ -34,7 +34,7 @@
           doAttack() {
             const results = attack(this.actors);
             this.logs.push(...results);
-            Vue.nextTick(() => this.$refs.log.scrollTop = this.$refs.log.scrollHeight);
+            Vue.nextTick(() => this.$refs.logs.scrollTop = this.$refs.logs.scrollHeight);
           },
           clear() {
             this.logs = [];
