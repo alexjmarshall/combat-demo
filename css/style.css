@@ -39,6 +39,9 @@ button {
 
 #app { 
   white-space: pre-line;
+  height: inherit;
+  display: flex;
+  flex-flow: column;
 }
 
 .flex-container {
@@ -104,6 +107,7 @@ button {
   scrollbar-width: none;
   scroll-behavior: smooth;
   height: 50vh;
+  padding-bottom: 1rem;
 }
 
 .logs::-webkit-scrollbar {
