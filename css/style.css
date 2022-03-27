@@ -107,7 +107,6 @@ button {
   scrollbar-width: none;
   scroll-behavior: smooth;
   height: 50vh;
-  padding-bottom: 1rem;
 }
 
 .logs::-webkit-scrollbar {
