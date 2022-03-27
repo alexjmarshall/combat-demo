@@ -491,7 +491,7 @@ const BASIC_INJURIES = {
         text: ' and snaps through bone',
       },
       critical: {
-        text: ' and the shattered bone pokes through the flesh',
+        text: ' and the broken bone juts out of the open wound',
       },
     },
     piercing: {
