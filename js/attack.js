@@ -411,7 +411,6 @@ export const attack = (() => {
 
     let output = [chatMsgData];
 
-    console.log(injury)
     if (targetHp > -10 && injury.fatal) {
       output.push(`${target.name} dies instantly.`);
     } else if (targetHp > -10 && target.hp.value <= -10) {
