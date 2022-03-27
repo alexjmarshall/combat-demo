@@ -1,61 +1,29 @@
-import { armors } from "./armors.js"
+import { armorLoadouts } from "./armors.js"
 import { weapons } from "./weapons.js"
 import * as Constant from "./constants.js"
-
-const armorLoadoutA = [
-  armors['Large Wooden Shield'],
-  armors['Gambeson'],
-  armors['Padded Leggings'],
-  armors['Iron Cuirass'],
-];
-
-const armorLoadoutB = [
-  armors['Gambeson'],
-  armors['Chain Hauberk'],
-  armors['Padded Coif'],
-  armors['Chain Coif'],
-];
-
-const weaponLoadoutA = [
-  weapons['Battle Axe'],
-];
-
-const weaponLoadoutB = [
-  weapons['Longsword'],
-  weapons['Dagger'],
-];
 
 export const actors = [
   {
     _id: 1,
-    name: 'B/X Bandit',
-    hp: 20,
-    armors: armorLoadoutA,
-    weapons: weaponLoadoutA,
-    ac: getAc(armorLoadoutA, weaponLoadoutA),
+    name: 'Player One',
+    hp: 12,
+    armors: armorLoadouts.a,
+    weapon: weapons[3],
+    ac: getAc(armorLoadouts.a),
   },
   {
     _id: 2,
-    name: 'Player One',
-    hp: 20,
-    armors: armorLoadoutB,
-    weapons: weaponLoadoutB,
-    ac: getAc(armorLoadoutB, weaponLoadoutB),
+    name: 'B/X Bandit',
+    hp: 12,
+    armors: armorLoadouts.b,
+    weapon: weapons[2],
+    ac: getAc(armorLoadouts.b),
   },
 ];
 
-console.log(actors);
+function getAc(armors) {
 
-function getAc(armors, weapons) {
-
-  const parryItem =  weapons.filter(i => i.atk_mode === 'parry');
-  const parryBonus = Number(parryItem?.parry_bonus) || 0;
-  const parry = {
-    parry_item_id: parryItem?._id,
-    parry_bonus: parryBonus,
-  };
-
-  const ac = { parry, total: {} };
+  const ac = { total: {} };
 
   // ac and dr for every body location
   for (const dmgType of Constant.DMG_TYPES) {
@@ -82,8 +50,7 @@ function getAc(armors, weapons) {
       }));
 
       // the best AC is used for this hit location
-      const wornAc = Math.max(0, ...armorAcs.map(i => i.ac)) + Constant.AC_MIN;
-      const locAc = wornAc + parryBonus;
+      const locAc = Math.max(0, ...armorAcs.map(i => i.ac)) + Constant.AC_MIN + shieldBonus;
 
       // damage reduction is cumulative, with a max of 2
       const locDr = Math.min(2, garments.reduce((sum, i) => sum + Constant.ARMOR_VS_DMG_TYPE[i.material][dmgType].dr, 0));
