@@ -1,5 +1,5 @@
-export const armors = {
-  'Large Wooden Shield': {
+export const armors = [
+  {
     _id: 1,
     name: 'Large Wooden Shield',
     base_ac: 3,
@@ -7,30 +7,32 @@ export const armors = {
     shield: true,
     material: 'wood',
   },
-  'Gambeson': {
-    _id: 3,
+  {
+    _id: 2,
     name: 'Gambeson',
     base_ac: 2,
     coverage: ['chest','gut','hip','groin','shoulder','upper arm','elbow','forearm'],
     material: 'padded',
   },
-  'Padded Leggings': {
+  {
     _id: 3,
-    name: 'Padded Leggings',
-    base_ac: 2,
-    coverage: ['thigh','knee','shin'],
-    material: 'padded',
-  },
-  'Iron Cuirass': {
-    _id: 4,
-    name: 'Iron Cuirass',
-    base_ac: 7,
-    coverage: ['chest','gut'],
+    name: 'Iron Greaves',
+    base_ac: 8,
+    coverage: ['knee','shin'],
     material: 'iron plate',
     rigid: true,
     metal: true,
   },
-  'Chain Hauberk': {
+  {
+    _id: 4,
+    name: 'Brigandine Cuirass',
+    base_ac: 4,
+    coverage: ['chest','gut'],
+    material: 'brigandine',
+    rigid: true,
+    metal: true,
+  },
+  {
     _id: 5,
     name: 'Chain Hauberk',
     base_ac: 5,
@@ -38,19 +40,33 @@ export const armors = {
     material: 'chain',
     metal: true,
   },
-  'Padded Coif': {
+  {
     _id: 6,
-    name: 'Padded Coif',
-    base_ac: 5,
-    coverage: ['neck','skull'],
-    material: 'chain',
-  },
-  'Chain Coif': {
-    _id: 7,
     name: 'Chain Coif',
-    base_ac: 5,
+    base_ac: 2,
     coverage: ['neck','skull'],
     material: 'chain',
-    metal: true,
   },
+  {
+    _id: 7,
+    name: 'Leather Cuisses',
+    base_ac: 3,
+    coverage: ['thigh'],
+    material: 'leather',
+  },
+];
+
+export const armorLoadouts = {
+  a: [
+    armors[5],
+    armors[4],
+    armors[1],
+    armors[6],
+  ],
+  b: [
+    armors[0],
+    armors[3],
+    armors[1],
+    armors[2],
+  ]
 };
