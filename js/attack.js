@@ -4,8 +4,8 @@ export const attack = (() => {
   let attackerId;
 
   const applyArmor = (armor) => {
-    const currentAC = armor?.base_ac;
-    const maxAc = armor?.base_ac;
+    const currentAC = armor?.base_ac.value;
+    const maxAc = armor?.base_ac.max;
 
     return Math.random() <= currentAC / maxAc; 
   }
@@ -90,7 +90,7 @@ export const attack = (() => {
     let isHit = true;
     
     let injuryObj = {};
-    const targetHp = target.hp;
+    const targetHp = target.hp.value;
     const minorBleedDesc = ' and the wound bleeds heavily';
     const majorBleedDesc = ' and blood spurts from the wound!';
   
@@ -114,7 +114,8 @@ export const attack = (() => {
     // roll for hit location
     const hitLocRoll = rollDice(100);
     let hitLocTable = atkForm === 'swing' ? 'SWING' : 'THRUST'; // TODO swing high/low
-    hitLoc = Constant.HIT_LOC_ARRS[hitLocTable][hitLocRoll - 1];
+    // hitLoc = Constant.HIT_LOC_ARRS[hitLocTable][hitLocRoll - 1];
+    hitLoc = 'gut';
     coverageArea = hitLoc.replace('right ', '').replace('left ', '');
     const acObj = target.ac[coverageArea][dmgType] || {};
     targetAc = acObj.ac ?? targetAc;
@@ -170,14 +171,15 @@ export const attack = (() => {
 
         // if damage type is blunt, armor must be rigid or shield to absorb the damage
         if ( armor && (dmgType !== 'blunt' || isRigid || isShield) ) {
-          const baseAc = Number(armor.base_ac);
+          const baseAc = Number(armor.base_ac.value);
           let verb = isSteelPlate ? 'dents' : isRigid ? 'punctures' : isShield ? 'splinters' : 'penetrates';
           if (baseAc < 2) {
             verb = 'destroys';
-            armor.base_ac = 0;
+            armor.base_ac.value = 0;
           } else {
-            armor.base_ac--;
+            armor.base_ac.value--;
           }
+          target.updateAc();
           hitDesc += ` and ${verb} ${armor.name}`;
         } else {
           weapDmgResult = weapDmgResult + weapDmgResult;
@@ -225,13 +227,14 @@ export const attack = (() => {
               dmg = 0;
             }
             // damage armor
-            const baseAc = Number(armor.base_ac);
+            const baseAc = Number(armor.base_ac.value);
             if (baseAc < 2) {
               verb = 'destroys';
-              armor.base_ac = 0;
+              armor.base_ac.value = 0;
             } else {
-              armor.base_ac--;
+              armor.base_ac.value--;
             }
+            target.updateAc();
 
             // append string
             armorPenString += ` and ${verb} ${armor.name}`;
@@ -286,13 +289,14 @@ export const attack = (() => {
           }
 
           // damage armor
-          const baseAc = Number(armor.base_ac);
+          const baseAc = Number(armor.base_ac.value);
           if (baseAc < 2) {
             verb = 'destroys';
-            armor.base_ac = 0;
+            armor.base_ac.value = 0;
           } else {
-            armor.base_ac--;
+            armor.base_ac.value--;
           }
+          target.updateAc();
 
           // append string
           hitDesc += ` and ${verb} ${armor.name}`;
@@ -359,7 +363,7 @@ export const attack = (() => {
       resultText += dmgEffect;
   
       // apply damage
-      target.hp -= totalDmgResult;
+      target.hp.value -= totalDmgResult;
 
 
     } else {
@@ -407,9 +411,9 @@ export const attack = (() => {
 
     let output = [chatMsgData];
 
-    if (targetHp > -10 && target.hp <= -10) {
+    if (targetHp > -10 && target.hp.value <= -10) {
       output.push(`${target.name} dies.`);
-    } else if (targetHp > 0 && target.hp <= 0) {
+    } else if (targetHp > 0 && target.hp.value <= 0) {
       output.push(`${target.name} collapses in pain.`);
     }
 

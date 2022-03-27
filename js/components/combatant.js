@@ -3,7 +3,7 @@ export const combatant = Vue.component('combatant', {
   template: `
     <div class="grid-container">
       <div class="grid-col-1"> Name </div> <div class="grid-col-2"> {{ actor.name }} </div>
-      <div class="grid-col-1"> HP </div> <div class="grid-col-2"> {{ actor.hp }} </div>
+      <div class="grid-col-1"> HP </div> <div class="grid-col-2"> {{ actor.hp.value }} </div>
       <div class="grid-col-1"> Weapon </div>  
       <div class="grid-col-2">
         <i @click="$emit('swap-weapon', actor._id, false)" class="fa fa-caret-left caret"></i>
@@ -20,7 +20,7 @@ export const combatant = Vue.component('combatant', {
         <div v-for="armor of actor.armors"> {{ armor.name }} </div>
       </div>
       <div class="armor-bonuses">
-        <div v-for="armor of actor.armors"> {{ armor.base_ac }} </div>
+        <div v-for="armor of actor.armors"> {{ armor.base_ac.value }} </div>
       </div>
     </div>
   `,

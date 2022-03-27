@@ -11,13 +11,10 @@
   <body>
 
     <div id="app">
-
       <div class="flex-container">
         <combatant class="combatant" v-on:swap-weapon="swapWeapon" v-for="actor in actors" v-bind:actor="actor" v-bind:key="actor._id"></combatant>
       </div>
-      
-      <div class="command-buttons"> <button @click="updateLog()">Attack!</button> <button @click="clearLog()">Clear</button> </div>
-
+      <div class="command-buttons"> <button @click="doAttack()">Attack!</button> <button @click="clear()">Clear</button> </div>
       <div class="logs"> <p v-for="log of logs"> {{ log }} </p> </div>
     </div>
 
@@ -30,18 +27,24 @@
       new Vue({
         el: '#app',
         data: {
-          actors: actors.map(a => ( {...a, armors: a.armors.map(a => ( {...a} ) ) } ) ),
+          actors,
           logs: [],
         },
         methods: {
-          updateLog() {
+          doAttack() {
             const results = attack(this.actors);
             this.logs.push(...results);
             this.logs.length > 6 && this.logs.shift();
           },
-          clearLog() {
+          clear() {
             this.logs = [];
-            this.actors = actors.map(a => ( {...a, armors: a.armors.map(a => ( {...a} ) ) } ) );
+            // refesh actor HP and armor base AC
+            for (const actor of actors) {
+              actor.hp.value = actor.hp.max;
+              for (const armor of actor.armors) {
+                armor.base_ac.value = armor.base_ac.max;
+              }
+            }
           },
           swapWeapon(actorId, right) {
             const actor = this.actors.find(a => a._id === actorId);
