@@ -31,6 +31,8 @@ export const attack = (() => {
     const attacker = actors.find(a => a._id === attackerId);
     const target = actors.find(a => a._id !== attackerId);
     const weapon = attacker.weapon;
+
+    let injury = {};
     
     const attackerSize = Constant.SIZE_VALUES[attacker.size];
     const targetSize = Constant.SIZE_VALUES[target.size];
@@ -335,8 +337,8 @@ export const attack = (() => {
       }
   
       const negHPs = Math.min(0, targetHp - totalDmgResult);
-      const injury = negHPs < -5 ? injuryObj.critical : negHPs < -2 ? injuryObj.serious : injuryObj.light;
-      if (negHPs) resultText += injury.text;
+      injury = negHPs < -5 ? injuryObj.critical : negHPs < -2 ? injuryObj.serious : negHPs < 0 ? injuryObj.light : injury;
+      if (injury.text) resultText += injury.text;
   
       // hard code bleed effects for certain injuries
       if ( resultText.includes('severs') || resultText.includes('lacerates') ) {
@@ -409,7 +411,10 @@ export const attack = (() => {
 
     let output = [chatMsgData];
 
-    if (targetHp > -10 && target.hp.value <= -10) {
+    console.log(injury)
+    if (targetHp > -10 && injury.fatal) {
+      output.push(`${target.name} dies instantly.`);
+    } else if (targetHp > -10 && target.hp.value <= -10) {
       output.push(`${target.name} dies.`);
     } else if (targetHp > 0 && target.hp.value <= 0) {
       output.push(`${target.name} collapses in pain.`);
