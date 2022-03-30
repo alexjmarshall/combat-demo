@@ -491,7 +491,7 @@ const BASIC_INJURIES = {
         text: ' and snaps through bone',
       },
       critical: {
-        text: ' and the broken bone juts out of the open wound',
+        text: ' and snaps through bone and the bone juts out of the open wound',
       },
     },
     piercing: {
@@ -499,10 +499,10 @@ const BASIC_INJURIES = {
         text: ' and tears through muscle',
       },
       serious: {
-        text: ' and chips a bone',
+        text: ' and tears through muscle and chips a bone',
       },
       critical: {
-        text: ' and severs a tendon',
+        text: ' and tears through muscle and severs a tendon',
       },
     },
     slashing: {
@@ -510,10 +510,10 @@ const BASIC_INJURIES = {
         text: ' and severs a muscle',
       },
       serious: {
-        text: ' and severs a tendon',
+        text: ' and severs a muscle and severs a tendon',
       },
       critical: {
-        text: ' and severs an artery',
+        text: ' and severs a muscle and severs an artery',
       },
     }
   },
@@ -526,7 +526,7 @@ const BASIC_INJURIES = {
         text: ' and dislocates the joint',
       },
       critical: {
-        text: ' and shatters the joint, cranking it in the wrong direction',
+        text: ' and shatters the bones and dislocates the joint',
       },
     },
     piercing: {
@@ -547,7 +547,7 @@ const BASIC_INJURIES = {
       serious: {
         text: ' and severs a ligament',
       },
-      critical: (part) => ({
+      critical: part => ({
         text: ` and lops off the ${part}`,
         removal: true,
       }),
@@ -1032,7 +1032,6 @@ export const HIT_LOC_ARRS = {
       HIT_LOC_ARRS[arr] = HIT_LOC_ARRS[arr].concat(fillLocArr(k, v.weights[i], v.bilateral));
     });
   }
-  console.log('Completed loading hit locations', HIT_LOC_ARRS);
 })();
 
 export const SIZE_VALUES = {
