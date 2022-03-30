@@ -11,7 +11,7 @@ export const attack = (() => {
   }
 
   const selectRandom = (arr) => {
-    const res = Math.floor(Math.random() * arr.length);
+    const res = Math.floor( Math.random() * arr.length );
     return arr[res];
   };
 
@@ -20,7 +20,7 @@ export const attack = (() => {
   };
 
 
-  return (actors) => {
+  return (actors, diceRoller=rollDice) => {
 
     if (!attackerId) {
       attackerId = actors[0]._id;
@@ -68,12 +68,12 @@ export const attack = (() => {
     const speedDiff = weapSpeed - targetWeapSpeed;
     const followAttackChance = speedDiff * 2;
     let followAttack = false;
-    if ( speedDiff > 0 && rollDice(100) <= followAttackChance) {
+    if ( speedDiff > 0 && diceRoller(100) <= followAttackChance) {
       followAttack = true;
     }
 
     // total attack result
-    const d20Result = rollDice(20);
+    const d20Result = diceRoller(20);
     let totalAtkResult = Math.max(1, d20Result + weapAtkMod + sitAtkMod);
 
     // strings to compose chat output
@@ -96,7 +96,7 @@ export const attack = (() => {
     const majorBleedDesc = ' and blood spurts from the wound!';
   
     
-    let rolledWeapDmg = rollDice(weapDmg);
+    let rolledWeapDmg = diceRoller(weapDmg);
     const maxWeapDmg = weapDmg;
     let weapDmgResult = rolledWeapDmg;
     
@@ -113,7 +113,7 @@ export const attack = (() => {
 
   
     // roll for hit location
-    const hitLocRoll = rollDice(100);
+    const hitLocRoll = diceRoller(100);
     let hitLocTable = atkForm === 'swing' ? 'SWING' : 'THRUST';
     hitLoc = Constant.HIT_LOC_ARRS[hitLocTable][hitLocRoll - 1];
     coverageArea = hitLoc.replace('right ', '').replace('left ', '');
@@ -142,6 +142,7 @@ export const attack = (() => {
   
   
     resultText += ` (${totalAtkResult} vs. AC ${targetAc}${dr ? `/DR ${dr}` : ''})`;
+
     // 1 always misses and 20 always hits
     isHit = d20Result > 1 && totalAtkResult >= targetAc || d20Result === 20;
   
@@ -149,7 +150,7 @@ export const attack = (() => {
   
     if (isHit) {
       // critical hits
-      const isCriticalHit = rollDice(100) <= totalAtkResult - targetAc;
+      const isCriticalHit = diceRoller(100) <= totalAtkResult - targetAc;
 
       // avoids rigid armor/shield
       if (isCriticalHit) {
@@ -194,7 +195,7 @@ export const attack = (() => {
       const knockDownMulti = invalidKnockdownAreas.includes(coverageArea) ? 0 :
                              doubleKnockdownAreas.includes(coverageArea) ? 2 : 1;
       const knockdownChance = knockDownMulti * 2 * (weapDmgResult + 10 - weapSpeed) - 10 * (targetSize - attackerSize);
-      const isKnockdown = atkForm === 'swing' && rollDice(100) <= knockdownChance;
+      const isKnockdown = atkForm === 'swing' && diceRoller(100) <= knockdownChance;
       if (isKnockdown) {
         dmgEffect += " and knocks them down";
         // add prone condition manually
@@ -215,7 +216,7 @@ export const attack = (() => {
           const isSteelPlate = armor?.material === 'steel plate';
           if (isSteelPlate) break;
 
-          let rolledDmg = maxImpaleAreas.includes(coverageArea) ? maxWeapDmg : rollDice(weapDmg);
+          let rolledDmg = maxImpaleAreas.includes(coverageArea) ? maxWeapDmg : diceRoller(weapDmg);
           let dmg = rolledDmg;
 
           if (applyArmor(armor)) {
@@ -273,7 +274,7 @@ export const attack = (() => {
       let bleedChance = 25;
       if (bleedBonus) minBleedDmg--;
       if (easyBleedAreas.includes(coverageArea)) bleedChance *= 2;
-      const isBleed = !applyArmor(metalArmor) && dmgType === 'slashing' && rolledWeapDmg >= minBleedDmg && rollDice(100) <= bleedChance;
+      const isBleed = !applyArmor(metalArmor) && dmgType === 'slashing' && rolledWeapDmg >= minBleedDmg && diceRoller(100) <= bleedChance;
       
       if (isBleed) {
         const armor = sortedWornArmors[0];
@@ -309,8 +310,6 @@ export const attack = (() => {
         sortedWornArmors.shift();
       }
 
-      
-
       hitDesc = hitDesc || ' and hits';
 
       // switch dmgType to blunt if metal armor/plate remains
@@ -332,7 +331,7 @@ export const attack = (() => {
       resultText += dmgText;
   
   
-      if (totalDmgResult < 2) {
+      if (totalDmgResult < 2 && targetHp > 0) {
         resultText = resultText.replace('hits', 'grazes');
       }
   
@@ -372,7 +371,7 @@ export const attack = (() => {
         ` but the blow is deflected${deflectingArmor ? ` by ${deflectingArmor.name}` : ''}`;
 
       // fumbles
-      if (rollDice(100) <= targetAc - totalAtkResult) {
+      if (diceRoller(100) <= targetAc - totalAtkResult) {
         const fumbles = [
           ` and slips and falls`, 
           ` and stumbles, leaving them open for attack`,
@@ -411,6 +410,7 @@ export const attack = (() => {
 
     let output = [chatMsgData];
 
+    // add final result descriptions
     if (targetHp > -10 && injury.fatal) {
       output.push(`${target.name} dies instantly.`);
     } else if (targetHp > -10 && target.hp.value <= -10) {
