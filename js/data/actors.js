@@ -1,6 +1,6 @@
 import { armorSets } from "./armors.js"
 import { weapons } from "./weapons.js"
-import * as Constant from "./constants.js"
+import { AC_MIN, ARMOR_VS_DMG_TYPE, DMG_TYPES, HIT_LOCATIONS } from "./constants.js"
 
 const actorData = {
   'Player One': {
@@ -41,14 +41,14 @@ export class Actor {
     const ac = { total: {} };
 
     // ac and dr for every body location
-    for (const dmgType of Constant.DMG_TYPES) {
+    for (const dmgType of DMG_TYPES) {
       ac.total[dmgType] = {
         ac: 0,
         dr: 0,
       }
     }
   
-    for (const [k,v] of Object.entries(Constant.HIT_LOCATIONS)) {
+    for (const [k,v] of Object.entries(HIT_LOCATIONS)) {
       ac[k] = {};
       const coveringItems = armors.filter(i => i.coverage?.includes(k));
       const garments =  coveringItems.filter(i => !i.shield);
@@ -56,19 +56,19 @@ export class Actor {
       const shield = coveringItems.find(i => i.shield);
   
       // worn ac & dr
-      for (const dmgType of Constant.DMG_TYPES) {
+      for (const dmgType of DMG_TYPES) {
   
-        const shieldBonus = shield?.base_ac.value + Constant.ARMOR_VS_DMG_TYPE[shield?.material]?.[dmgType].ac || 0;
+        const shieldBonus = shield?.base_ac.value + ARMOR_VS_DMG_TYPE[shield?.material]?.[dmgType].ac || 0;
         const armorAcs = garments.map(i => ({ 
           _id: i._id,
-          ac: i.base_ac.value + Constant.ARMOR_VS_DMG_TYPE[i.material][dmgType].ac,
+          ac: i.base_ac.value + ARMOR_VS_DMG_TYPE[i.material][dmgType].ac,
         }));
   
         // the best AC is used for this hit location
-        const locAc = Math.max(0, ...armorAcs.map(i => i.ac)) + Constant.AC_MIN + shieldBonus;
+        const locAc = Math.max(0, ...armorAcs.map(i => i.ac)) + AC_MIN + shieldBonus;
   
         // damage reduction is cumulative, with a max of 2
-        const locDr = Math.min(2, garments.reduce((sum, i) => sum + Constant.ARMOR_VS_DMG_TYPE[i.material][dmgType].dr, 0));
+        const locDr = Math.min(2, garments.reduce((sum, i) => sum + ARMOR_VS_DMG_TYPE[i.material][dmgType].dr, 0));
   
         // sort armor by AC, with shield first
         let sorted_armor_ids = armorAcs.sort((a,b) => b.ac - a.ac).map(i => i._id);
