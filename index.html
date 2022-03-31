@@ -15,8 +15,12 @@
       <div class="flex-container">
         <combatant class="combatant" v-on:swap-weapon="swapWeapon" v-for="actor in actors" v-bind:actor="actor" v-bind:key="actor._id"></combatant>
       </div>
-      <div class="command-buttons"> <button @click="doAttack()">Attack!</button> <button @click="clear()">Clear</button> </div>
-      <div ref="logs" class="logs"> <p class="log" v-for="log of logs"> {{ log }} </p> </div>
+      <div class="command-buttons"> 
+        <button @click="doAttack()" :disabled="isDisabled">Attack!</button> 
+        <button @click="clear()">Clear</button> </div>
+      <div ref="logs" class="logs"> 
+        <p class="log" v-for="log of logs"> {{ log }} </p> 
+      </div>
     </div>
 
 	  <script type="module">
@@ -30,6 +34,11 @@
         data: {
           actors,
           logs: [],
+        },
+        computed: {
+          isDisabled() {
+            return this.actors.some(a => a.hp.value < 1);
+          }
         },
         methods: {
           doAttack() {

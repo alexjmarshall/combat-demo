@@ -37,6 +37,10 @@ button {
   text-shadow: 0 0 5px #C8C8C8;
 }
 
+button:disabled {
+  opacity: 40%;
+}
+
 #app { 
   white-space: pre-line;
   height: inherit;
