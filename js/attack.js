@@ -316,7 +316,7 @@ export const attack = (() => {
         dmgType = 'blunt';
         if (/hits$/.test(hitDesc)) {
           const bluntingArmor = steelPlateArmor || metalArmor;
-          hitDesc += ` but the blade is turned by ${bluntingArmor.name}`;
+          hitDesc += ` though the blade is turned by ${bluntingArmor.name}`;
         }
       }
 
