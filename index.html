@@ -44,6 +44,7 @@
               for (const armor of actor.armors) {
                 armor.base_ac.value = armor.base_ac.max;
               }
+              actor.updateAc();
             }
           },
           swapWeapon(actorId, right) {
