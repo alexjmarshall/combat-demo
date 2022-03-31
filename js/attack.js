@@ -1,4 +1,5 @@
 import * as Constant from "./data/constants.js";
+import { diceRoller } from "./utils.js";
 
 export const attack = (() => {
   let attackerId;
@@ -15,12 +16,11 @@ export const attack = (() => {
     return arr[res];
   };
 
-  const rollDice = (numSides) => {
-    return Math.ceil( Math.random() * Number(numSides) );
-  };
+  return (actors, rollDice=diceRoller) => {
 
-
-  return (actors, diceRoller=rollDice) => {
+    actors.forEach(a => {
+      if (a.attacker) attackerId = a._id;
+    });
 
     if (!attackerId) {
       attackerId = actors[0]._id;
@@ -33,7 +33,6 @@ export const attack = (() => {
     const weapon = attacker.weapon;
 
     let injury = {};
-    
     const attackerSize = Constant.SIZE_VALUES[attacker.size];
     const targetSize = Constant.SIZE_VALUES[target.size];
   
@@ -68,12 +67,12 @@ export const attack = (() => {
     const speedDiff = weapSpeed - targetWeapSpeed;
     const followAttackChance = speedDiff * 2;
     let followAttack = false;
-    if ( speedDiff > 0 && diceRoller(100) <= followAttackChance) {
+    if ( speedDiff > 0 && rollDice(100) <= followAttackChance) {
       followAttack = true;
     }
 
     // total attack result
-    const d20Result = diceRoller(20);
+    const d20Result = rollDice(20);
     let totalAtkResult = Math.max(1, d20Result + weapAtkMod + sitAtkMod);
 
     // strings to compose chat output
@@ -95,8 +94,7 @@ export const attack = (() => {
     const minorBleedDesc = ' and the wound bleeds heavily';
     const majorBleedDesc = ' and blood spurts from the wound!';
   
-    
-    let rolledWeapDmg = diceRoller(weapDmg);
+    let rolledWeapDmg = rollDice(weapDmg);
     const maxWeapDmg = weapDmg;
     let weapDmgResult = rolledWeapDmg;
     
@@ -113,7 +111,7 @@ export const attack = (() => {
 
   
     // roll for hit location
-    const hitLocRoll = diceRoller(100);
+    const hitLocRoll = rollDice(100);
     let hitLocTable = atkForm === 'swing' ? 'SWING' : 'THRUST';
     hitLoc = Constant.HIT_LOC_ARRS[hitLocTable][hitLocRoll - 1];
     coverageArea = hitLoc.replace('right ', '').replace('left ', '');
@@ -150,7 +148,7 @@ export const attack = (() => {
   
     if (isHit) {
       // critical hits
-      const isCriticalHit = diceRoller(100) <= totalAtkResult - targetAc;
+      const isCriticalHit = rollDice(100) <= totalAtkResult - targetAc;
 
       // avoids rigid armor/shield
       if (isCriticalHit) {
@@ -195,7 +193,7 @@ export const attack = (() => {
       const knockDownMulti = invalidKnockdownAreas.includes(coverageArea) ? 0 :
                              doubleKnockdownAreas.includes(coverageArea) ? 2 : 1;
       const knockdownChance = knockDownMulti * 2 * (weapDmgResult + 10 - weapSpeed) - 10 * (targetSize - attackerSize);
-      const isKnockdown = atkForm === 'swing' && diceRoller(100) <= knockdownChance;
+      const isKnockdown = atkForm === 'swing' && rollDice(100) <= knockdownChance;
       if (isKnockdown) {
         dmgEffect += " and knocks them down";
         // add prone condition manually
@@ -216,7 +214,7 @@ export const attack = (() => {
           const isSteelPlate = armor?.material === 'steel plate';
           if (isSteelPlate) break;
 
-          let rolledDmg = maxImpaleAreas.includes(coverageArea) ? maxWeapDmg : diceRoller(weapDmg);
+          let rolledDmg = maxImpaleAreas.includes(coverageArea) ? maxWeapDmg : rollDice(weapDmg);
           let dmg = rolledDmg;
 
           if (applyArmor(armor)) {
@@ -274,7 +272,7 @@ export const attack = (() => {
       let bleedChance = 25;
       if (bleedBonus) minBleedDmg--;
       if (easyBleedAreas.includes(coverageArea)) bleedChance *= 2;
-      const isBleed = !applyArmor(metalArmor) && dmgType === 'slashing' && rolledWeapDmg >= minBleedDmg && diceRoller(100) <= bleedChance;
+      const isBleed = !applyArmor(metalArmor) && dmgType === 'slashing' && rolledWeapDmg >= minBleedDmg && rollDice(100) <= bleedChance;
       
       if (isBleed) {
         const armor = sortedWornArmors[0];
@@ -325,7 +323,7 @@ export const attack = (() => {
       injuryObj = Constant.HIT_LOCATIONS[coverageArea]?.injury?.[dmgType] || {};
 
       resultText += hitDesc;
-
+      
       let totalDmgResult = weapDmgResult;
       let dmgText = ` for ${totalDmgResult}${dmgType ? ` ${dmgType}` : ''} damage`;
       resultText += dmgText;
@@ -371,7 +369,7 @@ export const attack = (() => {
         ` but the blow is deflected${deflectingArmor ? ` by ${deflectingArmor.name}` : ''}`;
 
       // fumbles
-      if (diceRoller(100) <= targetAc - totalAtkResult) {
+      if (rollDice(100) <= targetAc - totalAtkResult) {
         const fumbles = [
           ` and slips and falls`, 
           ` and stumbles, leaving them open for attack`,
@@ -418,7 +416,6 @@ export const attack = (() => {
     } else if (targetHp > 0 && target.hp.value <= 0) {
       output.push(`${target.name} collapses in pain.`);
     }
-
 
     return output;
 
