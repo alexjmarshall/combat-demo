@@ -43,7 +43,7 @@ button:disabled {
 
 #app { 
   white-space: pre-line;
-  height: inherit;
+  height: calc(100% - 4rem);
   display: flex;
   flex-flow: column;
 }
@@ -110,7 +110,6 @@ button:disabled {
   -ms-overflow-style: none;
   scrollbar-width: none;
   scroll-behavior: smooth;
-  height: 50vh;
 }
 
 .logs::-webkit-scrollbar {
