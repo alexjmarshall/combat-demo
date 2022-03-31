@@ -120,3 +120,7 @@ button:disabled {
 .log {
   margin-top: 0;
 }
+
+[v-cloak] { 
+  display: none; 
+}
