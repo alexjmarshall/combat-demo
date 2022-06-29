@@ -1,49 +1,4 @@
-export const ATTRIBUTE_TYPES = ["String", "Number", "Boolean", "Formula", "Resource"];
-export const SECONDS_IN_DAY = 86400;
-export const SECONDS_IN_HOUR = 3600;
 export const AC_MIN = 10;
-export const SPELL_TYPES = {
-  SPELL_CLERIC: "spell_cleric",
-  SPELL_MAGIC: "spell_magic",
-  SPELL_WITCH: "spell_witch"
-};
-export const MAX_SPELL_LEVELS = {
-  [SPELL_TYPES.SPELL_CLERIC]: 5,
-  [SPELL_TYPES.SPELL_MAGIC]: 9,
-  [SPELL_TYPES.SPELL_WITCH]: 6
-};
-export const ATTITUDES = {
-  HOSTILE: "hostile",
-  DISMISSIVE: "dismissive",
-  UNCERTAIN: "uncertain",
-  ACCEPTING: "accepting",
-  HELPFUL: "helpful"
-};
-export const ATTITUDE_SELL_ADJ = {
-  [ATTITUDES.HOSTILE]: 1.3,
-  [ATTITUDES.DISMISSIVE]: 1.1,
-  [ATTITUDES.UNCERTAIN]: 1,
-  [ATTITUDES.ACCEPTING]: 0.95,
-  [ATTITUDES.HELPFUL]: 0.85
-};
-export const ATTITUDE_BUY_ADJ = {
-  [ATTITUDES.HOSTILE]: 0.7,
-  [ATTITUDES.DISMISSIVE]: 0.9,
-  [ATTITUDES.UNCERTAIN]: 1,
-  [ATTITUDES.ACCEPTING]: 1.05,
-  [ATTITUDES.HELPFUL]: 1.15
-};
-export const FIGHTER_XP_PROGRESSION = [
-  {xpRequired: 240000, updateData: {"data.level": 9, "data.bab": 9, "data.st": 9, "data.xp.max": 360000}},
-  {xpRequired: 120000, updateData: {"data.level": 8, "data.bab": 8, "data.st": 9, "data.xp.max": 240000}},
-  {xpRequired: 60000, updateData: {"data.level": 7, "data.bab": 7, "data.st": 10, "data.xp.max": 120000}},
-  {xpRequired: 30000, updateData: {"data.level": 6, "data.bab": 6, "data.st": 11, "data.xp.max": 60000}},
-  {xpRequired: 15000, updateData: {"data.level": 5, "data.bab": 5, "data.st": 11, "data.xp.max": 30000}},
-  {xpRequired: 7000, updateData: {"data.level": 4, "data.bab": 4, "data.st": 12, "data.xp.max": 15000}},
-  {xpRequired: 3000, updateData: {"data.level": 3, "data.bab": 3, "data.st": 13, "data.xp.max": 7000}},
-  {xpRequired: 1000, updateData: {"data.level": 2, "data.bab": 2, "data.st": 13, "data.xp.max": 3000}},
-  {xpRequired: 0, updateData: {"data.level": 1, "data.bab": 1, "data.st": 14, "data.xp.max": 1000}}
-];
 export const DMG_TYPES = ["blunt", "piercing", "slashing"];
 export const SHIELD_TYPES = {
   large: {
@@ -53,109 +8,6 @@ export const SHIELD_TYPES = {
   medium: {
     coverage: "chest,gut,elbow,forearm,hand",
     material: "wood",
-  },
-};
-export const MATERIAL_PROPS = {
-  wood: {
-    weight:8,
-    warmth:0,
-    gp_value:30,
-  },
-  linen: {
-    weight:1,
-    warmth:8,
-    gp_value:5,
-  },
-  wool: {
-    weight:2,
-    warmth:20,
-    gp_value:12,
-  },
-  silk: {
-    weight:0.5,
-    warmth:14,
-    gp_value:90,
-  },
-  fur: {
-    weight:5,
-    warmth:36,
-    gp_value:50,
-  },
-  padded: {
-    weight:4,
-    warmth:20,
-    gp_value:15,
-    metal:false,
-    rigid:false,
-  },
-  leather: {
-    weight:6,
-    warmth:10,
-    gp_value:20,
-    metal:false,
-    rigid:true,
-  },
-  brigandine: {
-    weight:20,
-    warmth:16,
-    gp_value:100,
-    metal:true,
-    rigid:true,
-  },
-  scale: {
-    weight:22,
-    warmth:14,
-    gp_value:90,
-    metal:true,
-    rigid:false,
-  },
-  chain: {
-    weight:12,
-    warmth:2,
-    gp_value:150,
-    metal:true,
-    rigid:false,
-  },
-  "elven chain": {
-    weight:6,
-    warmth:1,
-    metal:true,
-    rigid:false,
-  },
-  "banded mail": {
-    weight:14,
-    warmth:4,
-    gp_value:180,
-    metal:true,
-    rigid:false,
-  },
-  lamellar: {
-    weight:20,
-    warmth:12,
-    gp_value:120,
-    metal:true,
-    rigid:true,
-  },
-  splint: {
-    weight:18,
-    warmth:14,
-    gp_value:140,
-    metal:true,
-    rigid:true,
-  },
-  "iron plate": {
-    weight:18,
-    warmth:10,
-    gp_value:200,
-    metal:true,
-    rigid:true,
-  },
-  "steel plate": {
-    weight:16,
-    warmth:8,
-    gp_value:500,
-    metal:true,
-    rigid:true,
   },
 };
 export const ARMOR_VS_DMG_TYPE = {
@@ -480,7 +332,6 @@ export const ATK_MODES = {
     ATK_FORM: "throw",
   },
 };
-
 const BASIC_INJURIES = {
   limb: {
     blunt: {
@@ -554,7 +405,6 @@ const BASIC_INJURIES = {
     },
   },
 };
-
 // weights listed in order: swing, thrust, swing_high, thrust_high, swing_low, thrust_low
 export const HIT_LOCATIONS = {
   foot: {
@@ -1007,7 +857,6 @@ export const HIT_LOCATIONS = {
     },
   },
 };
-
 // populate hit location arrays on startup
 export const HIT_LOC_ARRS = {
   SWING: [],
@@ -1033,7 +882,6 @@ export const HIT_LOC_ARRS = {
     });
   }
 })();
-
 export const SIZE_VALUES = {
   T: 0, // tiny
   S: 1, // small
@@ -1042,21 +890,3 @@ export const SIZE_VALUES = {
   H: 4, // huge
   G: 5, // gargantuan
 };
-
-export const WEAPON_PROFICIENCY_CATEGORIES = [
-  "axes",
-  "bludgeons",
-  "bows",
-  "crossbows",
-  "curved swords",
-  "daggers",
-  "hammers",
-  "large swords",
-  "piercing swords",
-  "polearms",
-  "spears",
-  "spiked bludgeons",
-  "staves",
-  "straight swords",
-  "whip/sling",
-];
