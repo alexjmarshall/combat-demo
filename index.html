@@ -11,7 +11,7 @@
   </head>
   <body>
 
-    <div v-cloak id="app">
+    <div id="app">
       <div class="flex-container">
         <combatant class="combatant" v-on:swap-weapon="swapWeapon" v-for="actor in actors" v-bind:actor="actor" v-bind:key="actor._id"></combatant>
       </div>
@@ -19,7 +19,7 @@
         <button @click="doAttack()" :disabled="isDisabled">Attack!</button> 
         <button @click="clear()">Clear</button> </div>
       <div ref="logs" class="logs"> 
-        <p class="log" v-for="log of logs"> {{ log }} </p> 
+        <p v-cloak class="log" v-for="log of logs"> {{ log }} </p> 
       </div>
     </div>
 
