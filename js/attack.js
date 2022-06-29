@@ -245,7 +245,8 @@ export const attack = (() => {
             if (!canDeepImpale) {
               dmg = 0;
             }
-            stuck = atkForm !== 'shoot';
+            stuck = true;
+            followAttack = false;
           }
 
           impaleDmg += dmg;
